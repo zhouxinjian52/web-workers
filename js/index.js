@@ -2,7 +2,6 @@
 
 var module = function () {};
 
-
 Object.assign(module.prototype, {
 	    init () {
 			// this.hehe();
@@ -19,8 +18,9 @@ Object.assign(module.prototype, {
 		workers1 () {
 			var that = this;
 			console.time("控制台计时器一");
-			var works = new Worker('../build/abc.js');
-
+			self.importScript('../js/abc.js');
+			var works = new Worker('../js/abc.js');
+			
 			works.onmessage=function(event){
 				// console.log(event.data);
 				document.getElementById("result").innerText = event.data;
@@ -34,7 +34,7 @@ Object.assign(module.prototype, {
 		workers2 () {
 			var that = this;
 			console.time("控制台计时器二");
-			var hehe = new Worker('../build/ccc.js');
+			var hehe = new Worker('../js/ccc.js');
 			hehe.onmessage=function(event){
 				console.log(event);
 				document.getElementById("result2").innerText = event.data;

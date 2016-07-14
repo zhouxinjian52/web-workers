@@ -1,0 +1,53 @@
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+<div id="log"></div>
+
+<script src="./js/plus/jquery-3.0.0.min.js"></script>
+<script id="workers" type="javascript/worker">
+    // This script won't be parsed by JS engines because its type is javascript/worker.
+
+    self.onmessage = function(e) {
+        setInterval(function(){
+            var [h,m,t] = getTime();
+            // console.log([h,m,t]);
+            self.postMessage(h+":"+m+":"+t);
+        },1000);
+    };
+
+    function getTime(){
+
+        var time = new Date(),
+            h = time.getHours(),
+            m = time.getMinutes(),
+            t = time.getSeconds();
+
+        h = h < 10 ? '0'+h : h;
+        m = m < 10 ? '0'+m : m;
+        t = t < 10 ? '0'+t : t;
+
+        return [h,m,t];
+    }
+
+</script>
+
+<script>
+
+    var blob = new Blob([
+        $('#workers').text()
+    ], { type: "text/javascript" });
+
+    // Note: window.webkitURL.createObjectURL() in Chrome 10+.
+    var worker = new Worker(window.URL.createObjectURL(blob));
+
+    worker.onmessage = function(e) {
+        $('#log').html("now: " + e.data);
+    }
+
+    worker.postMessage("hello"); // Start the worker.
+
+</script>
+</body>
+</html>

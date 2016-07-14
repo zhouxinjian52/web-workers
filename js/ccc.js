@@ -3,7 +3,7 @@
  */
 
 console.time("控制台计时器四");
-var num = 1999999999;
+var num = 19999999999;
 var r = 0;
 for (var i = 1; i < num; i++) {
 	r += i;
